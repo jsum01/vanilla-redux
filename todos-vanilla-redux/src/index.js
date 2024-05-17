@@ -28,9 +28,11 @@ const reducer = (state = [], action) => {
   console.log(action);
   switch (action.type) {
     case ADD_TODO:
-      return [...state, { text: action.text, id: Date.now() }]; // state를 changin하는 것이 아니라 우리가 직접 mutate해서 return하는 것이다.
+      const newTodoObj = { text: action.text, id: Date.now() };
+      return [...state, newTodoObj]; // state를 changin하는 것이 아니라 우리가 직접 mutate해서 return하는 것이다.
     case DELETE_TODO:
-      return state.filter(item => item.id !== parseInt(action.id, 10)); // filtering
+      const removedTodoArr = state.filter(item => item.id !== parseInt(action.id, 10));
+      return removedTodoArr;
     default:
       return state;
   }
