@@ -14,7 +14,7 @@ const reducer = (state = [], action) => {
   console.log(action);
   switch (action.type) {
     case ADD_TODO:
-      return [...state, { text: action.text }];
+      return [...state, { text: action.text, id: Date.now() }]; // state를 changin하는 것이 아니라 우리가 직접 mutate해서 return하는 것이다.
     case DELETE_TODO:
       return [];
     default:
@@ -22,7 +22,7 @@ const reducer = (state = [], action) => {
   }
 }
 
-const store = createStore(); // store은 read only기 때문에 action을 통해 수정해줘야 한다.
+const store = createStore(reducer); // store은 read only기 때문에 action을 통해 수정해줘야 한다.
 store.subscribe(() => console.log(store.getState()));
 
 const form = document.querySelector("form");
