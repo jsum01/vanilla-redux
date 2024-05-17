@@ -23,18 +23,36 @@ const reducer = (state = [], action) => {
 }
 
 const store = createStore(reducer); // store은 read only기 때문에 action을 통해 수정해줘야 한다.
-store.subscribe(() => console.log(store.getState()));
+
+const paintTodos = () => {
+  const toDos = store.getState();
+  ul.innerHTML = ""; // 이렇게 비워주지 않으면 repainting된다.
+  toDos.forEach(todo => {
+    const li = document.createElement("li");
+    li.id = todo.id;
+    li.innerText = todo.text;
+    ul.appendChild(li);
+  })
+}
+store.subscribe(paintTodos);
 
 const form = document.querySelector("form");
 const input = document.querySelector("input");
 const ul = document.querySelector("ul");
 
+/**
+ * Add
+ * @param {*} text 
+ */
+const addTodo = (text) => {
+  store.dispatch({ type: ADD_TODO, text });
+}
 
 const onSubmit = e => {
   e.preventDefault();
-  const toDo = input.value;
+  const todo = input.value;
   input.value = "";
-  store.dispatch({ type: ADD_TODO, text: toDo }); // 제출할 때 ADD_TODO 타입의 디스패치를 보낸다.
+  addTodo(todo);
 };
 
 form.addEventListener("submit", onSubmit);
